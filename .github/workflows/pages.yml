@@ -1,0 +1,80 @@
+# Publish the companion site to GitHub Pages on every push to main.
+#
+# There is no build toolchain here — no npm, no bundler, nothing to install.
+# build.py reads content/moments.csv and the media manifest and writes plain
+# HTML into public/, and that folder is what gets served.
+#
+# The one subtlety is the address. A GitHub Pages project site is served from
+# a folder named after the repository, so a moment that should live at
+# /m/w014/ actually lives at /polarity-of-grief/m/w014/. The job works that
+# prefix out from the repository name and hands it to build.py, so the 404
+# page and the permanent addresses printed on each moment page agree with
+# where the site really is.
+#
+# Attach a custom domain later and this needs one change: set BASE_PATH to /
+# in the "Build the site" step.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:      # lets you redeploy by hand from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys run at once, but don't cancel one in flight either —
+# a half-published site is worse than a slightly stale one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The repo may be rooted at the site folder or one level above it.
+      - name: Locate the site
+        id: find
+        run: |
+          if [ -f "build.py" ]; then
+            echo "dir=." >> "$GITHUB_OUTPUT"
+          elif [ -f "site/build.py" ]; then
+            echo "dir=site" >> "$GITHUB_OUTPUT"
+          else
+            echo "Could not find build.py at the repo root or in site/." >&2
+            exit 1
+          fi
+
+      - name: Build the site
+        working-directory: ${{ steps.find.outputs.dir }}
+        env:
+          # /polarity-of-grief/ — derived from the repo name, so renaming the
+          # repository can never silently break every link on the site.
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: |
+          python3 build.py
+          touch public/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ steps.find.outputs.dir }}/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

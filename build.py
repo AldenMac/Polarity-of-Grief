@@ -31,6 +31,26 @@ PUBLIC = os.path.join(HERE, "public")
 MOMENTS_CSV = os.path.join(HERE, "content", "moments.csv")
 MANIFEST = os.path.join(PUBLIC, "media", "manifest.json")
 
+# Where the site lives on its host, as a path from the domain root.
+#
+# On a domain of its own — polarityofgrief.com, or a Cloudflare Pages URL —
+# this is "/" and the printed codes read /m/w014/, which is what they should
+# read forever.
+#
+# GitHub Pages is the exception. A project site is served from a folder named
+# after the repository, so the same moment is at /polarity-of-grief/m/w014/.
+# Set BASE_PATH to match, or the 404 page and every permanent address printed
+# on the site will point at the domain root and miss:
+#
+#     BASE_PATH=/polarity-of-grief/ python3 build.py
+#
+# The day a real domain is attached, drop the variable and rebuild.
+BASE = os.environ.get("BASE_PATH", "/")
+if not BASE.startswith("/"):
+    BASE = "/" + BASE
+if not BASE.endswith("/"):
+    BASE += "/"
+
 SITE_NAME = "Polarity of Grief"
 TAGLINE = "The companion to Rob McFadden's book about his son Walker."
 WALKER = "Anthon Walker McFadden"
@@ -63,7 +83,7 @@ def page(title, body, depth=0, description="", hero_canvas=False, extra="",
     # The 404 is served from whatever address the visitor mistyped, so its own
     # links have to be absolute — a relative path would resolve against a
     # directory that does not exist.
-    up = "/" if absolute else depth_prefix(depth)
+    up = BASE if absolute else depth_prefix(depth)
     full_title = title if title == SITE_NAME else f"{title} &middot; {SITE_NAME}"
     canvas_js = RIVER_JS if hero_canvas else ""
     return f"""<!doctype html>
@@ -500,7 +520,7 @@ def build_moment_page(m, media, prev_m, next_m):
   {caption}
   <div class="pagenav">{''.join(nav)}</div>
   <div class="permalink">Permanent address for this moment:
-    <code>/m/{m['id']}/</code></div>
+    <code>{BASE}m/{m['id']}/</code></div>
 </article>
 """
     return page(m["title"], body, depth=depth,
@@ -531,14 +551,14 @@ def build_moments_index(moments, media):
 
 
 def build_404():
-    body = """
+    body = f"""
 <section class="pagehead wrap" style="padding-block:120px 90px">
   <div class="eyebrow">That address isn't here</div>
   <h1 class="serif">We couldn't find that moment.</h1>
   <p>If you scanned a code from the book and landed here, the moment may not be
   published yet. Try the chapters, or the full list of moments.</p>
-  <p style="margin-top:26px"><a class="go" href="/chapters/">Browse the chapters &rarr;</a>
-  &nbsp; <a class="go" href="/moments/">Every moment &rarr;</a></p>
+  <p style="margin-top:26px"><a class="go" href="{BASE}chapters/">Browse the chapters &rarr;</a>
+  &nbsp; <a class="go" href="{BASE}moments/">Every moment &rarr;</a></p>
 </section>
 """
     return page("Not found", body, depth=0, absolute=True)
@@ -603,7 +623,7 @@ def main():
 
     # a machine-readable index, handy for generating the QR sheet later
     write("moments.json", json.dumps(
-        [{"id": m["id"], "url": f"/m/{m['id']}/", "title": m["title"],
+        [{"id": m["id"], "url": f"{BASE}m/{m['id']}/", "title": m["title"],
           "part": m["part"], "chapter": m["chapter_title"],
           "media": len(media.get(m["id"], [])), "status": m["status"]}
          for m in moments], indent=1, ensure_ascii=False))
