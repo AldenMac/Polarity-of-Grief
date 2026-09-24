@@ -1,6 +1,6 @@
 
 :root{
-  --ink:#0b0d12;--ink2:#141821;--ink3:#1d2331;
+  --ink:#191970;--ink2:#232383;--ink3:#2e2e9c;
   --fog:#e9e6df;--fog2:#a9a698;--fog3:#6b6a63;
   --river:#7fb3c8;--river2:#3f7f99;--ember:#d9a066;
   --edge:rgba(233,230,223,.12);
@@ -62,14 +62,14 @@ nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:13px;c
 .moment .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
 @media(max-width:860px){.moment .grid{grid-template-columns:1fr}}
 .frame{position:relative;aspect-ratio:4/3;max-width:100%;overflow:hidden;background:
-  radial-gradient(120% 90% at 30% 20%,#2c4a5a 0%,#152331 45%,#0b0d12 100%);border:1px solid var(--edge)}
+  radial-gradient(120% 90% at 30% 20%,#2c4a5a 0%,#152331 45%,#191970 100%);border:1px solid var(--edge)}
 .frame::after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");mix-blend-mode:overlay;pointer-events:none}
 .frame .water{position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(180deg,rgba(127,179,200,.0),rgba(127,179,200,.28));animation:sway 6s ease-in-out infinite alternate}
 @keyframes sway{from{transform:translateY(0)}to{transform:translateY(-8px)}}
 .frame .fig{position:absolute;left:47%;top:18%;width:26px;height:64px;border-radius:12px 12px 4px 4px;background:var(--fog);opacity:.85;animation:fall 5s cubic-bezier(.4,0,.6,1) infinite}
 @keyframes fall{0%,15%{top:18%;opacity:.85}55%{top:52%;opacity:.85}62%,100%{top:56%;opacity:0}}
 .frame .label{position:absolute;left:18px;bottom:16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--fog2)}
-.frame .play{position:absolute;left:50%;top:50%;translate:-50% -50%;width:74px;height:74px;border-radius:50%;border:1px solid rgba(233,230,223,.5);display:grid;place-items:center;backdrop-filter:blur(6px);background:rgba(11,13,18,.35);transition:transform .4s}
+.frame .play{position:absolute;left:50%;top:50%;translate:-50% -50%;width:74px;height:74px;border-radius:50%;border:1px solid rgba(233,230,223,.5);display:grid;place-items:center;backdrop-filter:blur(6px);background:rgba(25,25,112,.35);transition:transform .4s}
 .frame:hover .play{transform:scale(1.08)}
 .frame .play::before{content:"";border-left:18px solid var(--fog);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
 .moment h2{font-size:clamp(34px,4.6vw,60px);line-height:1.02}
@@ -97,7 +97,7 @@ nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:13px;c
 .scan .beam{position:absolute;left:0;right:0;height:2px;background:var(--river);box-shadow:0 0 22px 4px rgba(127,179,200,.6);animation:beam 2.4s ease-in-out infinite alternate}
 @keyframes beam{from{top:12%}to{top:88%}}
 .scan .code{width:110px;height:110px;background:#fff;padding:7px}
-.land{min-height:190px;background:linear-gradient(180deg,#152331,#0b0d12);border:1px solid var(--edge);padding:18px;display:flex;flex-direction:column;justify-content:end;gap:6px}
+.land{min-height:190px;background:linear-gradient(180deg,#152331,#191970);border:1px solid var(--edge);padding:18px;display:flex;flex-direction:column;justify-content:end;gap:6px}
 .land .eyebrow{color:var(--ember)}
 .land b{font-family:'Bodoni Moda',serif;font-size:24px;font-weight:400}
 
@@ -152,7 +152,7 @@ cite{display:block;margin-top:12px;font-style:normal;font-size:12px;letter-spaci
 .frame img,.frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .frame .label{z-index:2;text-shadow:0 1px 10px rgba(0,0,0,.9)}
 .frame::before{content:"";position:absolute;inset:0;z-index:1;
-  background:linear-gradient(180deg,transparent 55%,rgba(11,13,18,.75))}
+  background:linear-gradient(180deg,transparent 55%,rgba(25,25,112,.75))}
 .frame video{z-index:3}
 
 /* the four small pictures under the featured moment */
@@ -220,7 +220,7 @@ cite{display:block;margin-top:12px;font-style:normal;font-size:12px;letter-spaci
 .mcard img,.mcard .noimg{width:100%;height:190px;object-fit:cover;display:block;
   filter:saturate(.78) brightness(.74);transition:filter .5s}
 .mcard:hover img{filter:saturate(1) brightness(.95)}
-.mcard .noimg{background:radial-gradient(120% 90% at 30% 20%,#2c4a5a,#152331 45%,#0b0d12)}
+.mcard .noimg{background:radial-gradient(120% 90% at 30% 20%,#2c4a5a,#152331 45%,#191970)}
 .mc-body{padding:18px 20px 22px;display:flex;flex-direction:column;gap:7px;flex:1}
 .mc-body h3{font-size:21px;line-height:1.2}
 .mc-id{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--river2)}
@@ -237,7 +237,7 @@ cite{display:block;margin-top:12px;font-style:normal;font-size:12px;letter-spaci
 .player{margin:0;position:relative;background:#000;border:1px solid var(--edge)}
 .player video{display:block;width:100%;max-height:78vh;background:#000}
 .player .rt{position:absolute;right:12px;top:12px;font-size:11px;letter-spacing:.1em;
-  color:var(--fog);background:rgba(11,13,18,.72);padding:4px 8px;
+  color:var(--fog);background:rgba(25,25,112,.72);padding:4px 8px;
   backdrop-filter:blur(6px);pointer-events:none}
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media(max-width:760px){.gallery{grid-template-columns:repeat(2,1fr)}}
